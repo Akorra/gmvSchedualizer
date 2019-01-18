@@ -83,8 +83,9 @@ while(True):
         break
     columns.append(field)
 
-df = pd.DataFrame(columns=columns)
+df = pd.DataFrame()
 while(True):
+    print(hookie_l)
     strt = input('\t\t[+] Start of activity [' + format.replace('%','') + ']: ')
     end = input('\t\t[+] End date [' + format.replace('%','') + ']: ')
     d1 = pd.to_datetime(strt, format=format)
@@ -93,12 +94,11 @@ while(True):
     tmp = tmp[~tmp.timestamp.isin(hookie_l)]
     tmp = tmp.set_index('timestamp')
     tmp = tmp[(tmp.index.dayofweek < 5)]
-    #tmp['hours'] = np.where(tmp.index.dayofweek==4, "6,25", "8,75")
     tmp['date'] = tmp.index.strftime("%d/%m/%Y")
     #tmp['hours'] = np.where(tmp.index.dayofweek==4, "6,25", "8,75")
     for col in columns[1:]:
         tmp[col] = input('\t\t[+] ' + col + ':' )
-    pd.concat([df, tmp])
+    df = pd.concat([df, tmp])
     if(input('\t[+] Is that it?[y/n]') == 'y'):
         break
 df.to_csv(filename + ".csv", sep=';', header=False, index=False)
